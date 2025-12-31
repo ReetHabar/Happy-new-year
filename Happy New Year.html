@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy New Year 2026 🎆</title>
+
+<style>
+:root {
+    --bg1: #ff6b6b;
+    --bg2: #4ecdc4;
+    --card-bg: rgba(255,255,255,0.18);
+    --text: #ffffff;
+    --btn-bg: #ffeb3b;
+    --btn-text: #000;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg1: #0f2027;
+        --bg2: #203a43;
+        --card-bg: rgba(0,0,0,0.5);
+        --text: #f1f1f1;
+        --btn-bg: #00ffd5;
+    }
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(-45deg, var(--bg1), var(--bg2), #6a11cb, #2575fc);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+    color: var(--text);
+    text-align: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+h1 {
+    font-size: 3em;
+    text-shadow: 0 5px 20px rgba(0,0,0,0.4);
+}
+
+.container {
+    max-width: 650px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 20px;
+    background: var(--card-bg);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+}
+
+button {
+    background: var(--btn-bg);
+    border: none;
+    padding: 14px 26px;
+    font-size: 1.1em;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+input {
+    width: 85%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: none;
+}
+
+.hidden { display: none; }
+
+/* 🎊 CONFETTI */
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 14px;
+    background: hsl(var(--hue), 100%, 60%);
+    top: -20px;
+    animation: confettiFall 3.5s linear forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* 🎆 FIREWORKS */
+.firework {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: hsl(var(--hue), 100%, 60%);
+    animation: explode 1.5s ease-out forwards;
+}
+
+@keyframes explode {
+    to {
+        transform: translate(var(--x), var(--y)) scale(0);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎉 Happy New Year 2026 🎉</h1>
+<p>26 main duniya khatam nahi hui, picture abhi baaki hai 😎</p>
+
+<div class="container">
+
+<div id="intro">
+    <p>Welcome to 2026! Ready for celebration?</p>
+    <button onclick="startGame()">Start Game</button>
+</div>
+
+<div id="game" class="hidden">
+    <h2>🎮 New Year Trivia</h2>
+
+    <div id="question1">
+        <p>What is a common New Year tradition?</p>
+        <button onclick="answer(1,'a')">Eating cake🍰</button>
+        <button onclick="answer(1,'b')">Watching fireworks🎆</button>
+        <button onclick="answer(1,'c')">Sleeping😴</button>
+    </div>
+
+    <div id="question2" class="hidden">
+        <p>What do people make on New Year's Day?</p>
+        <button onclick="answer(2,'a')">Mutton 😎</button>
+        <button onclick="answer(2,'b')">Chicken 😊</button>
+        <button onclick="answer(2,'c')">Sleep ☠️</button>
+    </div>
+
+    <div id="question3" class="hidden">
+        <p>How is your first Day going?</p>
+        <button onclick="answer(3,'a')">Good😎</button>
+        <button onclick="answer(3,'b')">Bad👌</button>
+        <button onclick="answer(3,'c')">Same as previous year😒</button>
+    </div>
+</div>
+
+<div id="questions" class="hidden">
+    <input id="tradition" placeholder="Favorite tradition">
+    <input id="resolution" placeholder="New Year resolution">
+    <button onclick="nextSection()">Next</button>
+</div>
+
+<div id="nameTag" class="hidden">
+    <input id="name" placeholder="Your name">
+    <button onclick="showPersonal()">Continue</button>
+</div>
+
+<div id="personal" class="hidden">
+    <h2 id="personalGreeting"></h2>
+    <input id="lastYear" placeholder="How was your last year?">
+    <input id="happy" placeholder="What makes you happy?">
+    <input id="feedback" placeholder="Tell me about myself ?">
+    <button onclick="finish()">Finish & Celebrate 🎆</button>
+</div>
+
+<div id="celebration" class="hidden">
+    <h2>🎆 LET’S CELEBRATE 🎆</h2>
+    <p id="summary"></p>
+</div>
+
+</div>
+
+<script>
+let score = 0;
+let currentQuestion = 1;
+const answers = {1:'b',2:'a',3:'b'};
+let userName = "Friend";
+
+function startGame(){
+    intro.classList.add('hidden');
+    game.classList.remove('hidden');
+}
+
+function answer(q,c){
+    if(c===answers[q]) score++;
+    document.getElementById(`question${q}`).classList.add('hidden');
+    if(q<3){
+        currentQuestion++;
+        document.getElementById(`question${currentQuestion}`).classList.remove('hidden');
+    } else {
+        game.classList.add('hidden');
+        questions.classList.remove('hidden');
+    }
+}
+
+function nextSection(){
+    questions.classList.add('hidden');
+    nameTag.classList.remove('hidden');
+}
+
+function showPersonal(){
+    userName = name.value || "Friend";
+    personalGreeting.textContent = `Hi ${userName} 👋`;
+    nameTag.classList.add('hidden');
+    personal.classList.remove('hidden');
+}
+
+function finish(){
+    summary.textContent =
+    `✨ ${userName}'s 2026 ✨
+Last Year: ${lastYear.value}
+Happiness: ${happy.value}
+Feedback: ${feedback.value}`;
+
+    personal.classList.add('hidden');
+    celebration.classList.remove('hidden');
+
+    // Confetti rain
+    for(let i=0;i<150;i++){
+        const c=document.createElement('div');
+        c.className='confetti';
+        c.style.left=Math.random()*100+'vw';
+        c.style.setProperty('--hue',Math.random()*360);
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),4000);
+    }
+
+    // Firework blasts
+    blast(30,40);
+    blast(50,30);
+    blast(70,45);
+}
+
+function blast(xp,yp){
+    const cx=innerWidth*xp/100;
+    const cy=innerHeight*yp/100;
+    for(let i=0;i<50;i++){
+        const f=document.createElement('div');
+        f.className='firework';
+        const a=Math.random()*2*Math.PI;
+        const d=Math.random()*180;
+        f.style.left=cx+'px';
+        f.style.top=cy+'px';
+        f.style.setProperty('--x',Math.cos(a)*d+'px');
+        f.style.setProperty('--y',Math.sin(a)*d+'px');
+        f.style.setProperty('--hue',Math.random()*360);
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(),1500);
+    }
+}
+</script>
+
+</body>
+</html>
